@@ -11,23 +11,23 @@ export class SignUp extends Component {
     super(props);
 
     this.state = {
-        allUserDetails:[], 
+      allUserDetails: [],
       FirstName: "",
-      LastName:"",
+      LastName: "",
       Email: "",
       Password: "",
       ConfirmPassword: "",
-      UserType:"",
-      Status:'',
+      UserType: "",
+      Status: '',
       firstnameError: "",
       lastnameError: "",
       emailError: "",
       passwordError: "",
-      confirmpasswordError:"",
-      existmail:0
-      
-      
-     
+      confirmpasswordError: "",
+      existmail: 0
+
+
+
     };
   }
 
@@ -66,10 +66,10 @@ export class SignUp extends Component {
         }
         break;
 
-        case "LastName":
+      case "LastName":
         console.log(name);
         if (value.length === 0) {
-          this.setState({lastnameError: "name should not be blank" });
+          this.setState({ lastnameError: "name should not be blank" });
           isValid = false;
           console.log(isValid);
         } else if (!value.match(/^[a-zA-Z ]{1,}$/)) {
@@ -83,7 +83,7 @@ export class SignUp extends Component {
         }
         break;
 
-      
+
 
       case "Email":
         console.log(name);
@@ -100,23 +100,22 @@ export class SignUp extends Component {
           isValid = true;
           console.log(isValid);
         }
-        var email=value;
+        var email = value;
 
         ApiService.CheckUserEmail(email)
-            .then((res) => {
-                var users = JSON.stringify(res.data.result);
-                
-                this.setState({existmail : res.data.result}) 
-                console.log(this.state.existmail) // in map key is result
-                if(this.state.existmail>0)
-                {
-                  alert('Already has account with this Email.Please Register with another Email')
-                }
-            }).catch((error)=>console.log(error));
-    
-    console.log("userdetails"+this.state.allUserDetails)
+          .then((res) => {
+            var users = JSON.stringify(res.data.result);
+
+            this.setState({ existmail: res.data.result })
+            console.log(this.state.existmail) // in map key is result
+            if (this.state.existmail > 0) {
+              alert('Already has account with this Email.Please Register with another Email')
+            }
+          }).catch((error) => console.log(error));
+
+        console.log("userdetails" + this.state.allUserDetails)
         break;
-      
+
       case "Password":
         if (value.length === 0) {
           this.setState({
@@ -165,24 +164,24 @@ export class SignUp extends Component {
 
   submitData = (e) => {
     e.preventDefault()
-   const validForm =this.validForm();
+    const validForm = this.validForm();
     // ApiService.CheckUserEmail(this.state.Email)
     //         .then((res) => {
     //             var users = JSON.stringify(res.data.result);
-                
+
     //             this.setState({allUserDetails : users})  // in map key is result
     //         }).catch((error)=>console.log(error));
-    
+
     // console.log("userdetails"+this.state.allUserDetails)
 
     var a = true;
     if (this.state.allUserDetails !== null) {
       alert("hello")
-     
-     for(let user of this.state.allUserDetails) {
-        
+
+      for (let user of this.state.allUserDetails) {
+
         if (user.email === this.state.Email) {
-          alert("inside"+a);
+          alert("inside" + a);
           a = false;
         }
       };
@@ -191,54 +190,52 @@ export class SignUp extends Component {
       this.state.allUserDetails = [];
 
       if (validForm) {
-       
+
         const userDetails = {
-          
+
           FirstName: this.state.FirstName,
-          LastName:this.state.LastName,
+          LastName: this.state.LastName,
           Email: this.state.Email,
           Password: this.state.Password,
           ConfirmPassword: this.state.ConfirmPassword,
-          UserType:'normal',
-          Status:'deactivate'
+          UserType: 'normal',
+          Status: 'deactivate'
         };
-        ApiService.addUser(userDetails).then(res=>
-          console.log(res)).catch(error=>console.log(error))
+        ApiService.addUser(userDetails).then(res =>
+          console.log(res)).catch(error => console.log(error))
 
-        
+
         this.props.history.push("/verifyuser");
-        var email=localStorage.getItem('verifyemail')
+        var email = localStorage.getItem('verifyemail')
 
-        if(email == null)
-        {
-           localStorage.setItem('verifyemail',this.state.Email)
+        if (email == null) {
+          localStorage.setItem('verifyemail', this.state.Email)
         }
       }
     } else if (this.state.allUserDetails != null) {
       if (validForm) {
         if (a) {
-          alert("a"+a)
+          alert("a" + a)
           const userDetails = {
-            
+
             FirstName: this.state.FirstName,
-            LastName:this.state.LastName,
+            LastName: this.state.LastName,
             Email: this.state.Email,
             Password: this.state.Password,
             ConfirmPassword: this.state.ConfirmPassword,
-            date:this.state.date,
-            UserType:'normal',
-            Status:'deactivate'
+            date: this.state.date,
+            UserType: 'normal',
+            Status: 'deactivate'
           };
-          ApiService.addUser((userDetails)).then(res=>
-            console.log(res.data.result)).catch(error=>console.log(error))
+          ApiService.addUser((userDetails)).then(res =>
+            console.log(res.data.result)).catch(error => console.log(error))
 
-          
+
           this.props.history.push("/verifyuser");
-          var email=localStorage.getItem('verifyemail')
+          var email = localStorage.getItem('verifyemail')
 
-          if(email == null)
-          {
-             localStorage.setItem('verifyemail',this.state.Email)
+          if (email != null) {
+            localStorage.setItem('verifyemail', this.state.Email)
           }
         } else {
           alert(
@@ -253,10 +250,10 @@ export class SignUp extends Component {
 
   render() {
     return (
-      <div className="box" style={{marginLeft:'400px',marginTop:'20px'}}>
+      <div className="box" style={{ marginLeft: '400px', marginTop: '20px' }}>
         <form autoComplete="off">
-          <div className="col-md-5 form-group" style={{textAlign:'center'}}>
-            
+          <div className="col-md-5 form-group" style={{ textAlign: 'center' }}>
+
             <input
               type="text"
               name="FirstName"
@@ -269,9 +266,9 @@ export class SignUp extends Component {
             <pre style={{ color: "red" }}> {this.state.firstnameError}</pre>
           </div>
 
-          
+
           <div className="col-md-5 form-group">
-            
+
             <input
               type="text"
               name="LastName"
@@ -283,9 +280,9 @@ export class SignUp extends Component {
             />
             <pre style={{ color: "red" }}> {this.state.lastnameError}</pre>
           </div>
-          
+
           <div className="col-md-5 form-group">
-            
+
             <input
               type="text"
               name="Email"
@@ -298,10 +295,10 @@ export class SignUp extends Component {
             <pre style={{ color: "red" }}> {this.state.emailError}</pre>
           </div>
 
-          
-          
+
+
           <div className="col-md-5 form-group">
-            
+
             <input
               type="text"
               name="Password"
@@ -315,7 +312,7 @@ export class SignUp extends Component {
           </div>
 
           <div className="col-md-5 form-group">
-            
+
             <input
               type="text"
               name="ConfirmPassword"
@@ -327,18 +324,6 @@ export class SignUp extends Component {
             />
           </div>
 
-          <div className="col-md-5 form-group">
-            
-            <input
-              type="text"
-              name="Date"
-              value= {this.state.date}
-              onChange={this.onchange}
-              
-              required
-              className="form-control"
-            />
-          </div>
 
           <button
             type="button"
